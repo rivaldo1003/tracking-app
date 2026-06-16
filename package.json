@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "tsx server.ts",
+    "dev": "node server.js",
     "build": "next build",
     "start": "NODE_ENV=production node server.js",
     "lint": "eslint",
@@ -19,13 +19,13 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
+    "@types/node": "^20.19.43",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.2.9",
     "tailwindcss": "^4",
     "tsx": "^4.19.2",
-    "typescript": "^5"
+    "typescript": "^5.9.3"
   }
 }

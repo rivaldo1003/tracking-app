@@ -1,6 +1,7 @@
-import { createServer } from "http";
-import next from "next";
-import { Server as SocketServer } from "socket.io";
+// server.js
+const { createServer } = require("http");
+const next = require("next");
+const { Server: SocketServer } = require("socket.io");
 
 const dev = process.env.NODE_ENV !== "production";
 const app = next({ dev });
@@ -18,8 +19,8 @@ app.prepare().then(() => {
     },
   });
 
-  let latestLocation: any = null;
-  let locationHistory: any[] = [];
+  let latestLocation = null;
+  let locationHistory = [];
 
   io.on("connection", (socket) => {
     console.log("📡 Client terhubung:", socket.id);
