@@ -14,6 +14,7 @@ import {
   Gauge,
   Target,
   Calendar,
+  Trash2,
 } from "lucide-react";
 
 interface LocationData {
@@ -31,6 +32,7 @@ export default function DashboardPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [showHistory, setShowHistory] = useState(true);
   const [mapError, setMapError] = useState(false);
+  const [isClearing, setIsClearing] = useState(false);
 
   const fetchData = async () => {
     try {
@@ -49,6 +51,32 @@ export default function DashboardPage() {
       console.error("Gagal fetch data:", error);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const clearHistory = async () => {
+    if (history.length === 0) return;
+
+    if (window.confirm("Yakin ingin menghapus semua riwayat lokasi?")) {
+      setIsClearing(true);
+      try {
+        const res = await fetch("/api/location", {
+          method: "DELETE",
+        });
+
+        if (res.ok) {
+          setHistory([]);
+          // Optional: refresh data setelah clear
+          await fetchData();
+        } else {
+          alert("Gagal menghapus riwayat");
+        }
+      } catch (error) {
+        console.error("Error clearing history:", error);
+        alert("Terjadi kesalahan saat menghapus riwayat");
+      } finally {
+        setIsClearing(false);
+      }
     }
   };
 
@@ -349,12 +377,31 @@ export default function DashboardPage() {
                   {history.length} data
                 </span>
               </div>
-              <button
-                onClick={() => setShowHistory(!showHistory)}
-                className="text-xs text-gray-500 hover:text-gray-700 font-medium"
-              >
-                {showHistory ? "Sembunyikan" : "Tampilkan"}
-              </button>
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={clearHistory}
+                  disabled={isClearing}
+                  className="flex items-center gap-1.5 text-xs text-red-500 hover:text-red-700 font-medium px-3 py-1.5 bg-red-50 hover:bg-red-100 rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isClearing ? (
+                    <>
+                      <RefreshCw className="w-3 h-3 animate-spin" />
+                      Menghapus...
+                    </>
+                  ) : (
+                    <>
+                      <Trash2 className="w-3 h-3" />
+                      Hapus Semua
+                    </>
+                  )}
+                </button>
+                <button
+                  onClick={() => setShowHistory(!showHistory)}
+                  className="text-xs text-gray-500 hover:text-gray-700 font-medium"
+                >
+                  {showHistory ? "Sembunyikan" : "Tampilkan"}
+                </button>
+              </div>
             </div>
 
             {showHistory && (

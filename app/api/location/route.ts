@@ -53,3 +53,25 @@ export async function GET() {
     count: locationHistory.length,
   });
 }
+
+// Tambahkan method DELETE untuk clear history
+export async function DELETE() {
+  try {
+    // Reset history dan latest location
+    locationHistory = [];
+    latestLocation = null;
+
+    console.log("🗑️ Riwayat lokasi telah dihapus");
+
+    return NextResponse.json({
+      success: true,
+      message: "Riwayat berhasil dihapus",
+    });
+  } catch (error) {
+    console.error("Error clearing history:", error);
+    return NextResponse.json(
+      { success: false, error: "Gagal menghapus riwayat" },
+      { status: 500 },
+    );
+  }
+}
