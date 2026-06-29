@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Live Tracking",
-  description: "Sistem pelacakan lokasi real-time",
+  title: "Solusi Digital Terbaik",
+  description: "",
 };
 
 export default function RootLayout({
